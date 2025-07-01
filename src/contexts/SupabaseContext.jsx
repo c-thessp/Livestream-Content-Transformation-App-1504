@@ -14,8 +14,8 @@ export const useSupabase = () => {
 export const SupabaseProvider = ({ children }) => {
   const [supabase] = useState(() => 
     createClient(
-      'https://cwduwrlckcdgaucjunb.supabase.co',
-      'your-anon-key' // Replace with your actual anon key
+      'https://cwduwrlckcdgaucjnunb.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3ZHV3cmxja2NkZ2F1Y2pudW5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzODIxODksImV4cCI6MjA2Njk1ODE4OX0.sXe-K4oEwsv35dc6Hep69I_YaRR059xr4wxfLerzIwA'
     )
   );
 
@@ -64,7 +64,7 @@ export const SupabaseProvider = ({ children }) => {
   const saveProcessedContent = async (content) => {
     try {
       const { data, error } = await supabase
-        .from('processed_transcripts')
+        .from('processed_transcripts_ssa2024')
         .insert([content])
         .select()
         .single();
@@ -80,7 +80,7 @@ export const SupabaseProvider = ({ children }) => {
   const getProcessedContent = async (id) => {
     try {
       const { data, error } = await supabase
-        .from('processed_transcripts')
+        .from('processed_transcripts_ssa2024')
         .select('*')
         .eq('id', id)
         .single();
@@ -96,12 +96,12 @@ export const SupabaseProvider = ({ children }) => {
   const getProcessingHistory = async () => {
     try {
       const { data, error } = await supabase
-        .from('processed_transcripts')
+        .from('processed_transcripts_ssa2024')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data;
+      return data || [];
     } catch (error) {
       console.error('Error fetching processing history:', error);
       throw error;
